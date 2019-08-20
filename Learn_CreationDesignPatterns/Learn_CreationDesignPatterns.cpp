@@ -3,8 +3,170 @@
 
 #include "pch.h"
 #include <iostream>
-
 using namespace std;
+
+#pragma region Abstract factor design pattern
+
+class Door {
+public:
+	Door(){}
+	virtual void Open() = 0;
+};
+
+class GasCarDoor : public Door {
+public :
+	GasCarDoor() : Door() {
+		cout << "Creating the dor for gas car!"<<endl;
+	}
+
+	void Open() {
+		cout << "door sound click" << endl;
+	}
+};
+
+class ElectricCarDoor : public Door {
+
+public:
+	ElectricCarDoor() {
+		cout << "Creating the door for electric car! " << endl;
+	}
+
+	void Open() {
+		cout << "door sound shhhhh!" << endl;
+	}
+};
+
+
+/// for engien stuff
+
+class Engine {
+
+protected:
+	char m_sound[15];
+
+public :
+	Engine(){
+		strcpy_s(m_sound, "");
+	}
+	virtual void Run() = 0;
+};
+
+
+class GasCarEngine : public Engine {
+public :
+	GasCarEngine() {
+		strcpy_s(m_sound, "vroom");
+		cout << "making a gas car engine" << endl;
+	}
+
+	void Run() {
+		cout << m_sound << endl;
+	}
+
+};
+
+
+class ElectricCarEngine : public Engine {
+public:
+	ElectricCarEngine() {
+		strcpy_s(m_sound, "whosshussh");
+		cout << "making a Electric car engine" << endl;
+	}
+
+	void Run() {
+		cout << m_sound << endl;
+	}
+
+};
+
+
+// creating a factory class for abstract factory.
+
+class CarFactory {
+public:
+	virtual Door* BuildDoor() = 0;
+	virtual Engine* BuildEngine() = 0;
+ };
+
+
+class GasCarFactory : public CarFactory {
+public:
+
+	// Inherited via CarFactory
+	virtual Door * BuildDoor() override
+	{
+		return new GasCarDoor();
+	}
+	virtual Engine * BuildEngine() override
+	{
+		return new GasCarEngine();
+	}
+};
+
+class ElectricCarFactory : public CarFactory {
+public:
+
+	Door * BuildDoor() 
+	{
+		return new ElectricCarDoor();
+	}
+
+	Engine * BuildEngine() 
+	{
+		return new ElectricCarEngine();
+	}
+
+};
+
+int main() {
+
+	CarFactory* carPlant;
+
+	// let user deside which car to build
+	int choice = 1;
+	cout << "Selecte a car to build \n";
+	cout << "1 : Electric Car\n";
+	cout << "2 : GAsoline car\n";
+	cout << "Your Selection : ";
+	cin >> choice;
+	cout << endl;
+
+	switch (choice) {
+		case 1: {
+			carPlant = new ElectricCarFactory();
+		}
+				break;
+		case 2: {
+			carPlant = new GasCarFactory();
+		}
+				break;
+		default :{
+			cout << "Dekh le lorya!!!!\n";
+				carPlant = NULL;
+		}
+				 break;
+	}
+
+
+	if (carPlant != NULL) {
+		Door* car1door =  carPlant->BuildDoor();
+		Engine* car1Engine =  carPlant->BuildEngine();
+
+		car1door->Open();
+		car1Engine->Run();
+	}
+
+
+
+	return 0;
+}
+
+#pragma endregion
+
+
+#pragma region Factor Method Concept
+
+
 
 //for factor method concept 
 //creating coffe maker for different types of coffee.
@@ -113,12 +275,14 @@ public :
 
 
 
-int main()
+int mainFactoryMethodConcept()
 {
 	CoffeeMakerFactory* cmf = new CoffeeMakerFactory();
 	Coffee* yourCoffee =  cmf->getCoffee();
 	cout <<endl<<"Le daal le agnd mai "<< yourCoffee->getType();
+	return 0;
 }
+#pragma endregion
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
