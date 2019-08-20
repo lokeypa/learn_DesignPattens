@@ -29,7 +29,7 @@ class Latte : public Coffee {
 
 public :
 	Latte() : Coffee() {
-		strcpy_s(m_type, "Latte the coffee!");
+		strcpy_s(m_type, "Latte!");
 		cout << "Making you fucking latte " << endl;
 		cout << "this is the latte coffee for you !";
 	}
@@ -39,26 +39,75 @@ public :
 
 
 //Second type of coffee i.e. Espresso .// concreate class.
-class Latte : public Coffee {
+class Espresso : public Coffee {
 
 public:
-	Latte() : Coffee() {
-		strcpy_s(m_type, "Espresso the coffee!");
+	Espresso() : Coffee() {
+		strcpy_s(m_type, "Espresso!");
 		cout << "Making you fucking Espresso " << endl;
 		cout << "this is the Espresso coffee for you !";
 	}
 
 };
 
+// third adding a new coffie i.e. cuppuccino 
+
+class Cuppuccino : public Coffee {
+
+public:
+	Cuppuccino() : Coffee() {
+		strcpy_s(m_type, "Cuppuccino!");
+		cout << "Making you fucking Cuppuccino " << endl;
+		cout << "this is the Cuppuccino coffee for you !";
+	}
+
+};
+
 
 // finally the concrete creattor class to create the required object of required component.
+class CoffeeMakerFactory {
+private:
+	Coffee *coffee;
 
+public :
+	Coffee* getCoffee() {
 
+		int choice = 1;
 
+		cout << "Select the type of coffee you want :" << endl;
+		cout << " 1 : : Latte  " << endl;
+		cout << " 2 : : Espresso  " << endl;
+		cout << " 3 : : Cuppuccino  " << endl;
+		cout<< " Selection. ";
+		
+		cin >> choice;
 
+		switch (choice) {
 
+		case 1: {
+			return new Latte();
+		}
+				break;
 
+		case 2: {
+			return new Espresso();
+		}
+				break;
 
+		case 3: {
+			return new Cuppuccino();
+		}
+				break;
+
+		default: {
+			cout << "chutiye dekh ke tyoe krr.";
+			return NULL;
+		}
+				 break;
+
+		}
+	}
+};
 
 
 
@@ -66,7 +115,9 @@ public:
 
 int main()
 {
-    
+	CoffeeMakerFactory* cmf = new CoffeeMakerFactory();
+	Coffee* yourCoffee =  cmf->getCoffee();
+	cout <<endl<<"Le daal le agnd mai "<< yourCoffee->getType();
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
